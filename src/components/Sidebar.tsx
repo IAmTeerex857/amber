@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X, Shield } from 'lucide-react';
+import { X } from 'lucide-react';
 
 // Per-route icon colors for the sidebar
 const iconColorMap: Record<string, string> = {
@@ -41,8 +41,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     `}>
       <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
         <div className="flex items-center space-x-3">
-          <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Shield className="h-5 w-5 text-white" />
+          <div className="h-8 w-8 flex items-center justify-center">
+            <img 
+              src="/Amber Icon purple.svg" 
+              alt="Amber Logo" 
+              className="h-8 w-8"
+            />
           </div>
           <h1 className="text-xl font-bold text-gray-900">Amber</h1>
         </div>

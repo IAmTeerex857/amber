@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Building2, Trophy, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Building2, Trophy, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useAuth, UserRole } from '../../contexts/AuthContext';
 import DiscordAuthButton from './DiscordAuthButton';
 import OrganizationSelection from './OrganizationSelection';
@@ -125,8 +125,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-16 w-16 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Shield className="h-10 w-10 text-white" />
+          <div className="mx-auto h-16 w-16 flex items-center justify-center">
+            <img 
+              src="/Amber Icon purple.svg" 
+              alt="Amber Logo" 
+              className="h-16 w-16"
+            />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             {mode === 'login' ? 'Sign in to' : mode === 'signup' ? 'Create your' : 'Reset password for'} Amber
