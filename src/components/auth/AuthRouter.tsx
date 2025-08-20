@@ -32,6 +32,8 @@ const AuthRouter: React.FC<AuthRouterProps> = ({ children }) => {
   if (!user.isOnboarded) {
     if (user.role === 'organization') {
       return <OrganizationOnboarding />;
+    } else if (user.role === 'president') {
+      return <AmbassadorRegistration />; // Presidents use similar onboarding to ambassadors for now
     } else if (user.role === 'ambassador') {
       return <AmbassadorRegistration />;
     }

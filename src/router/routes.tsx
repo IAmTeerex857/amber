@@ -24,11 +24,23 @@ import CountryRegionDashboards from '../components/rewards/CountryRegionDashboar
 
 // Import Hierarchical Role Management components
 import OrganizationManagement from '../components/management/OrganizationManagement';
+import ChapterManagement from '../components/ChapterManagement';
+import PresidentOnboarding from '../components/PresidentOnboarding';
+import FundingDashboard from '../components/FundingDashboard';
+import PresidentDashboard from '../components/PresidentDashboard';
+import AmbassadorOnboardingSystem from '../components/AmbassadorOnboardingSystem';
+import Communities from '../components/Communities';
+import AmbassadorProfile from '../components/AmbassadorProfile';
+import AmbassadorFundRequest from '../components/AmbassadorFundRequest';
+import AmbassadorTaskLogging from '../components/AmbassadorTaskLogging';
+import PresidentFundDistribution from '../components/PresidentFundDistribution';
+import MonthlyAllocations from '../components/MonthlyAllocations';
+import AuditTrail from '../components/AuditTrail';
 
 // Route guard component
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: ('organization' | 'ambassador')[];
+  allowedRoles?: ('organization' | 'president' | 'ambassador')[];
   requireOnboarded?: boolean;
 }
 
@@ -55,6 +67,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (requireOnboarded && user && !user.isOnboarded) {
     if (user.role === 'organization') {
       return <OrganizationOnboarding />;
+    } else if (user.role === 'president') {
+      return <AmbassadorRegistration />; // Presidents use similar onboarding
     } else if (user.role === 'ambassador') {
       return <AmbassadorRegistration />;
     }
@@ -66,7 +80,25 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 // Dashboard component that renders based on user role
 const RoleDashboard: React.FC = () => {
   const { user } = useAuth();
-  return user?.role === 'ambassador' ? <AmbassadorDashboard /> : <Dashboard />;
+  
+  if (user?.role === 'ambassador') {
+    return <AmbassadorDashboard />;
+  } else if (user?.role === 'president') {
+    return <PresidentDashboard />; // Presidents get their own dashboard
+  } else {
+    return <Dashboard />; // Organizations
+  }
+};
+
+// Profile component that renders based on user role
+const RoleProfile: React.FC = () => {
+  const { user } = useAuth();
+  
+  if (user?.role === 'ambassador') {
+    return <AmbassadorProfile />; // Enhanced profile for ambassadors
+  } else {
+    return <ProfilePage />; // Standard profile for orgs/presidents
+  }
 };
 
 // Task Assignment with mock campaign (will be replaced with proper routing later)
@@ -108,8 +140,88 @@ export const routes: RouteObject[] = [
   {
     path: '/campaigns',
     element: (
-      <ProtectedRoute allowedRoles={['organization']}>
+      <ProtectedRoute allowedRoles={['organization', 'president']}>
         <CampaignsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/chapters',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <ChapterManagement />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/president-onboarding',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <PresidentOnboarding />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/funding-dashboard',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <FundingDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/monthly-allocations',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <MonthlyAllocations />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/audit-trail',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <AuditTrail />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/ambassador-onboarding',
+    element: (
+      <ProtectedRoute allowedRoles={['president']}>
+        <AmbassadorOnboardingSystem />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/fund-distribution',
+    element: (
+      <ProtectedRoute allowedRoles={['president']}>
+        <PresidentFundDistribution />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/communities',
+    element: (
+      <ProtectedRoute allowedRoles={['organization', 'president', 'ambassador']}>
+        <Communities />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/fund-requests',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <AmbassadorFundRequest />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/task-logging',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <AmbassadorTaskLogging />
       </ProtectedRoute>
     ),
   },
@@ -157,7 +269,7 @@ export const routes: RouteObject[] = [
     path: '/profile',
     element: (
       <ProtectedRoute>
-        <ProfilePage />
+        <RoleProfile />
       </ProtectedRoute>
     ),
   },

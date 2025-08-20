@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, Trophy, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Building2, Trophy, Crown, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useAuth, UserRole } from '../../contexts/AuthContext';
 import DiscordAuthButton from './DiscordAuthButton';
 import OrganizationSelection from './OrganizationSelection';
@@ -156,6 +156,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
             >
               <Building2 className="h-4 w-4 mr-2" />
               Organization
+            </button>
+            <button
+              type="button"
+              onClick={() => setUserType('president')}
+              className={`flex-1 flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                userType === 'president'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <Crown className="h-4 w-4 mr-2" />
+              President
             </button>
             <button
               type="button"

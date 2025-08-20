@@ -7,20 +7,45 @@ import {
   Target, 
   Trophy,
   User,
-  Building2
+  Building2,
+  Crown,
+  MessageCircle,
+  Wallet,
+  UserPlus,
+  FileText,
+  DollarSign,
+  CreditCard,
+  Calendar,
+  Shield,
+  TrendingUp
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
 // Navigation configuration based on user role
-const getNavigationForRole = (role: 'organization' | 'ambassador') => {
+const getNavigationForRole = (role: 'organization' | 'president' | 'ambassador') => {
   if (role === 'ambassador') {
     return [
       { id: 'dashboard', name: 'Dashboard', icon: BarChart2, path: '/dashboard' },
-      { id: 'my-tasks', name: 'My Tasks', icon: Target, path: '/my-tasks' },
+      { id: 'my-tasks', name: 'My Tasks', icon: FileText, path: '/task-logging' },
+      { id: 'fund-requests', name: 'Fund Requests', icon: DollarSign, path: '/fund-requests' },
+      { id: 'communities', name: 'Communities', icon: MessageCircle, path: '/communities' },
       { id: 'leaderboard', name: 'Leaderboard', icon: Users, path: '/leaderboard' },
-      { id: 'payments', name: 'Payments', icon: Trophy, path: '/payments' },
+      { id: 'payments', name: 'Payments', icon: CreditCard, path: '/payments' },
+      { id: 'profile', name: 'Profile', icon: User, path: '/profile' },
+      { id: 'settings', name: 'Settings', icon: Settings, path: '/settings' }
+    ];
+  }
+
+  if (role === 'president') {
+    return [
+      { id: 'dashboard', name: 'Dashboard', icon: BarChart2, path: '/dashboard' },
+      { id: 'campaigns', name: 'Campaigns', icon: Target, path: '/campaigns' },
+      { id: 'ambassador-onboarding', name: 'Ambassadors', icon: UserPlus, path: '/ambassador-onboarding' },
+      { id: 'fund-distribution', name: 'Fund Distribution', icon: DollarSign, path: '/fund-distribution' },
+      { id: 'communities', name: 'Communities', icon: MessageCircle, path: '/communities' },
+      { id: 'leaderboard', name: 'Leaderboard', icon: Users, path: '/leaderboard' },
       { id: 'profile', name: 'Profile', icon: User, path: '/profile' },
       { id: 'settings', name: 'Settings', icon: Settings, path: '/settings' },
     ];
@@ -30,6 +55,11 @@ const getNavigationForRole = (role: 'organization' | 'ambassador') => {
   return [
     { id: 'dashboard', name: 'Dashboard', icon: BarChart2, path: '/dashboard' },
     { id: 'campaigns', name: 'Campaigns', icon: Target, path: '/campaigns' },
+    { id: 'chapters', name: 'Chapter Management', icon: Crown, path: '/chapters' },
+    // Enhanced Financial System
+    { id: 'funding-dashboard', name: 'Funding Dashboard', icon: TrendingUp, path: '/funding-dashboard' },
+    { id: 'monthly-allocations', name: 'Monthly Allocations', icon: Calendar, path: '/monthly-allocations' },
+    { id: 'audit-trail', name: 'Audit Trail', icon: Shield, path: '/audit-trail' },
     { id: 'leaderboard', name: 'Leaderboard', icon: Users, path: '/leaderboard' },
     // Payment & Rewards System
     { id: 'rewards-management', name: 'Rewards Management', icon: Trophy, path: '/rewards-management' },

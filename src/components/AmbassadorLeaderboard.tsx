@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { 
   Trophy, 
   ArrowUp, 
-  TrendingUp, 
-  ChevronDown
+  TrendingUp,
+  Users,
+  Target,
+  Clock,
+  Medal,
+  Award,
+  Crown
 } from 'lucide-react';
 import { SocialIcon, buildSocialUrl } from './SocialMediaIcons';
 
@@ -36,6 +41,7 @@ const AmbassadorLeaderboard: React.FC = () => {
   const [period, setPeriod] = useState<LeaderboardPeriod>('weekly');
   const [category, setCategory] = useState<LeaderboardCategory>('points');
   const [expanded, setExpanded] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState({ days: 12, hours: 6, minutes: 42 });
 
   // Mock data for ambassador rankings
   const topAmbassadors: Ambassador[] = [
@@ -173,15 +179,7 @@ const AmbassadorLeaderboard: React.FC = () => {
     }
   };
 
-  // Get label based on selected category
-  const getLabel = (): string => {
-    switch(category) {
-      case 'points': return 'Points';
-      case 'tasks': return 'Tasks';
-      case 'referrals': return 'Referrals';
-      default: return 'Points';
-    }
-  };
+
 
   // Get the top 3 ambassadors for podium display
   const podiumAmbassadors = topAmbassadors.slice(0, 3);
@@ -195,149 +193,197 @@ const AmbassadorLeaderboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Ambassador Leaderboard</h1>
+        
+        <div className="flex items-center gap-2">
+          <select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value as LeaderboardPeriod)}
+            className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="weekly">This Week</option>
+            <option value="monthly">Monthly</option>
+            <option value="allTime">All Time</option>
+          </select>
+          
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value as LeaderboardCategory)}
+            className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="points">Points</option>
+            <option value="tasks">Tasks</option>
+            <option value="referrals">Referrals</option>
+          </select>
+        </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <select 
-              className="appearance-none bg-gray-50 border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              value={period}
-              onChange={(e) => setPeriod(e.target.value as LeaderboardPeriod)}
-            >
-              <option value="weekly">This Week</option>
-              <option value="monthly">This Month</option>
-              <option value="allTime">All Time</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <ChevronDown className="h-4 w-4" />
+      {/* Stats Cards Row */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+          <div className="flex items-center justify-between mb-2">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Users className="h-4 w-4 text-green-600" />
             </div>
           </div>
+          <p className="text-sm text-gray-600 mb-1">Joined Members</p>
+          <p className="text-2xl font-bold text-gray-900">346+</p>
+        </div>
+
+        <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+          <div className="flex items-center justify-between mb-2">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Target className="h-4 w-4 text-blue-600" />
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mb-1">Achieved Goals</p>
+          <p className="text-2xl font-bold text-gray-900">732+</p>
+        </div>
+
+        <div className="col-span-2 bg-yellow-50 rounded-lg p-4 border border-yellow-100">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="h-4 w-4 text-yellow-600" />
+                <span className="text-sm font-medium text-gray-700">Remaining time to completion 🔥</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{timeRemaining.days}</div>
+                  <div className="text-xs text-gray-500">DAYS</div>
+                </div>
+                <div className="text-2xl font-bold text-gray-400">:</div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{timeRemaining.hours}</div>
+                  <div className="text-xs text-gray-500">HOURS</div>
+                </div>
+                <div className="text-2xl font-bold text-gray-400">:</div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">{timeRemaining.minutes}</div>
+                  <div className="text-xs text-gray-500">MINUTES</div>
+                </div>
+              </div>
+              <p className="text-xs text-gray-600 mt-2">⚠️ Only the first three positions will be awarded prizes</p>
+            </div>
+            <div className="p-3 bg-yellow-100 rounded-lg">
+              <Trophy className="h-8 w-8 text-yellow-600" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Current Leaders Section */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-semibold text-gray-900">Current Leaders</h2>
           
-          <div className="relative">
-            <select 
-              className="appearance-none bg-gray-50 border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              value={category}
-              onChange={(e) => setCategory(e.target.value as LeaderboardCategory)}
-            >
-              <option value="points">Points</option>
-              <option value="tasks">Tasks</option>
-              <option value="referrals">Referrals</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <ChevronDown className="h-4 w-4" />
-            </div>
+          <div className="flex gap-2">
+            {(['weekly', 'monthly', 'allTime'] as LeaderboardPeriod[]).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                  period === p 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {p === 'weekly' ? 'Week' : p === 'monthly' ? 'Month' : 'Today'}
+              </button>
+            ))}
           </div>
         </div>
-
-        <div className="text-sm text-gray-500 flex items-center gap-2">
-            <div className="text-center">
-              <div className="relative mb-4">
-                <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold mb-2 mx-auto">
-                  {podiumAmbassadors[1]?.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-bold text-gray-700">
-                  2
-                </div>
+        
+        {/* Top 3 Podium */}
+        <div className="flex items-end justify-center gap-6 mb-8">
+          {/* 2nd Place */}
+          <div className="text-center">
+            <div className="relative mb-4">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-lg font-bold mb-2 mx-auto">
+                <Medal className="h-6 w-6 text-gray-500" />
               </div>
-              <div className="text-sm font-medium">{podiumAmbassadors[1]?.name}</div>
-              <div className="text-xs opacity-80">{getValue(podiumAmbassadors[1])}</div>
-            </div>
-
-            {/* 1st Place */}
-            <div className="text-center">
-              <div className="relative mb-4">
-                <div className="w-24 h-24 bg-white bg-opacity-30 rounded-full flex items-center justify-center text-2xl font-bold mb-2 mx-auto border-4 border-yellow-400">
-                  {podiumAmbassadors[0]?.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-sm font-bold text-yellow-900">
-                  <Trophy className="w-4 h-4" />
-                </div>
+              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                2
               </div>
-              <div className="text-lg font-bold">{podiumAmbassadors[0]?.name}</div>
-              <div className="text-sm opacity-90">{getValue(podiumAmbassadors[0])}</div>
             </div>
+            <div className="text-sm font-medium text-gray-900">{podiumAmbassadors[1]?.name || 'Sam Johnson'}</div>
+            <div className="text-sm text-gray-600">{getValue(podiumAmbassadors[1]) || '1120'} pts.</div>
+          </div>
 
-            {/* 3rd Place */}
-            <div className="text-center">
-              <div className="relative mb-4">
-                <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-2xl font-bold mb-2 mx-auto">
-                  {podiumAmbassadors[2]?.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-orange-400 rounded-full flex items-center justify-center text-xs font-bold text-orange-900">
-                  3
-                </div>
+          {/* 1st Place */}
+          <div className="text-center">
+            <div className="relative mb-4">
+              <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center text-2xl font-bold mb-2 mx-auto border-2 border-yellow-400">
+                <Crown className="h-8 w-8 text-yellow-600" />
               </div>
-              <div className="text-sm font-medium">{podiumAmbassadors[2]?.name}</div>
-              <div className="text-xs opacity-80">{getValue(podiumAmbassadors[2])}</div>
+              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-sm font-bold text-yellow-900">
+                1
+              </div>
             </div>
+            <div className="text-lg font-bold text-gray-900">{podiumAmbassadors[0]?.name || 'Isabella Rodriguez'}</div>
+            <div className="text-sm text-yellow-600 font-semibold">{getValue(podiumAmbassadors[0]) || '1250'} pts.</div>
+          </div>
+
+          {/* 3rd Place */}
+          <div className="text-center">
+            <div className="relative mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-lg font-bold mb-2 mx-auto">
+                <Award className="h-6 w-6 text-orange-500" />
+              </div>
+              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-orange-400 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                3
+              </div>
+            </div>
+            <div className="text-sm font-medium text-gray-900">{podiumAmbassadors[2]?.name || 'Brian Chen'}</div>
+            <div className="text-sm text-gray-600">{getValue(podiumAmbassadors[2]) || '980'} pts.</div>
           </div>
         </div>
+      </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Time Period Selector */}
-            <div className="flex space-x-2">
-              {(['weekly', 'monthly', 'allTime'] as LeaderboardPeriod[]).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setPeriod(p)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    period === p 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
+      {/* Global Rankings Table */}
+      <div className="bg-white rounded-lg border border-gray-200">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-gray-900">Global Ranking</h3>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">Sort by</span>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as LeaderboardCategory)}
+                  className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
-                  {p === 'allTime' ? 'All Time' : p.charAt(0).toUpperCase() + p.slice(1)}
-                </button>
-              ))}
-            </div>
-
-            {/* Category Selector */}
-            <div className="flex space-x-2">
-              {(['points', 'tasks', 'referrals'] as LeaderboardCategory[]).map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setCategory(cat)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    category === cat 
-                      ? 'bg-green-600 text-white' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                </button>
-              ))}
+                  <option value="points">Task completed</option>
+                  <option value="tasks">Tasks</option>
+                  <option value="referrals">Referrals</option>
+                </select>
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search by user name"
+                  className="pl-8 pr-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+                <div className="absolute left-2.5 top-2">
+                  <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Rankings Table */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-8 py-6 border-b border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900">Rankings</h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Rank
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ambassador
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tier
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {getLabel()}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+        
+        {/* Compact Rankings Table */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User name</th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tier</th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total points</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
                 {listAmbassadors.map((ambassador) => (
                   <tr key={ambassador.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -477,8 +523,9 @@ const AmbassadorLeaderboard: React.FC = () => {
             </table>
           </div>
         </div>
+      </div>
 
-        {/* How to Improve Section */}
+      {/* How to Improve Section */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
           <TrendingUp className="h-5 w-5 mr-2 text-blue-600" />

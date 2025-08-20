@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type UserRole = 'organization' | 'ambassador';
+export type UserRole = 'organization' | 'president' | 'ambassador';
 
 export interface DiscordProfile {
   id: string;
@@ -13,6 +13,20 @@ export interface DiscordProfile {
     icon: string;
     roles: string[];
   }>;
+}
+
+// Chapter interface for the new chapter-based structure
+export interface Chapter {
+  id: string;
+  name: string;
+  country: string;
+  region: string;
+  organizationId: string;
+  presidentId?: string;
+  monthlyBudget: number;
+  ambassadorCount: number;
+  isActive: boolean;
+  createdDate: string;
 }
 
 // Export the Organization interface to make it available in the OrganizationSwitcher
@@ -29,6 +43,7 @@ export interface User {
   role: UserRole;
   name: string;
   organizationId?: string;
+  chapterId?: string; // New: chapter assignment for presidents and ambassadors
   isOnboarded: boolean;
   discordId?: string; 
   discordUsername?: string;
@@ -39,11 +54,14 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   organizations: Organization[];
+  chapters: Chapter[];
   login: (email: string, password: string, role: UserRole) => Promise<void>;
   signup: (email: string, password: string, name: string, role: UserRole) => Promise<void>;
   loginWithDiscord: () => Promise<DiscordProfile | null>;
   selectOrganization: (organizationId: string) => Promise<void>;
   switchOrganization: (organizationId: string) => Promise<void>;
+  selectChapter: (chapterId: string) => Promise<void>;
+  switchChapter: (chapterId: string) => Promise<void>;
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
   updateUser: (updates: Partial<User>) => void;
@@ -67,6 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [chapters, setChapters] = useState<Chapter[]>([]);
 
   useEffect(() => {
     // Check for existing session on app load
@@ -75,6 +94,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const token = localStorage.getItem('authToken');
         const userData = localStorage.getItem('userData');
         const orgsData = localStorage.getItem('organizations');
+        const chaptersData = localStorage.getItem('chapters');
         
         if (token && userData) {
           const parsedUser = JSON.parse(userData);
@@ -89,12 +109,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               console.error('Error parsing organizations data:', e);
             }
           }
+          
+          // Load chapters from localStorage if available
+          if (chaptersData) {
+            try {
+              const parsedChapters = JSON.parse(chaptersData);
+              setChapters(parsedChapters);
+            } catch (e) {
+              console.error('Error parsing chapters data:', e);
+            }
+          }
         }
       } catch (error) {
         console.error('Error checking auth state:', error);
         localStorage.removeItem('authToken');
         localStorage.removeItem('userData');
         localStorage.removeItem('organizations');
+        localStorage.removeItem('chapters');
       } finally {
         setIsLoading(false);
       }
@@ -117,6 +148,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         role,
         name: email.split('@')[0],
         organizationId: role === 'ambassador' ? 'org-123' : undefined,
+        chapterId: role === 'president' ? 'chapter-123' : undefined,
         isOnboarded: false // New users need onboarding
       };
 
@@ -149,6 +181,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem('organizations', JSON.stringify(mockOrgs));
       }
       
+      // Create mock chapters for president users
+      if (role === 'president') {
+        const mockChapters: Chapter[] = [
+          {
+            id: 'chapter-123',
+            name: 'Primary Chapter',
+            country: 'USA',
+            region: 'North America',
+            organizationId: 'org-123',
+            presidentId: mockUser.id,
+            monthlyBudget: 10000,
+            ambassadorCount: 5,
+            isActive: true,
+            createdDate: '2024-01-01'
+          },
+          {
+            id: 'chapter-456',
+            name: 'Secondary Chapter',
+            country: 'Canada',
+            region: 'North America',
+            organizationId: 'org-456',
+            presidentId: mockUser.id,
+            monthlyBudget: 10000,
+            ambassadorCount: 3,
+            isActive: true,
+            createdDate: '2024-02-01'
+          }
+        ];
+        setChapters(mockChapters);
+        // Persist chapters to localStorage
+        localStorage.setItem('chapters', JSON.stringify(mockChapters));
+      }
+      
       localStorage.setItem('authToken', mockToken);
       localStorage.setItem('userData', JSON.stringify(mockUser));
       setUser(mockUser);
@@ -173,6 +238,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         role,
         name,
         organizationId: role === 'ambassador' ? 'org-123' : undefined,
+        chapterId: role === 'president' ? 'chapter-123' : undefined,
         isOnboarded: false // New users need onboarding
       };
 
@@ -322,6 +388,65 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const selectChapter = async (chapterId: string) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call to set the selected chapter
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      const selectedChapter = chapters.find(chapter => chapter.id === chapterId);
+      if (!selectedChapter && chapterId) {
+        throw new Error('Chapter not found');
+      }
+
+      // Create user with chapter info
+      const mockUser: User = {
+        id: `president-${Date.now()}`,
+        email: 'president@example.com',
+        role: 'president',
+        name: 'President User',
+        chapterId: chapterId || undefined,
+        isOnboarded: false,
+        discordId: 'discord-12345',
+        discordUsername: 'discord_user',
+        discordAvatar: 'https://cdn.discordapp.com/avatars/12345/abcdef.png'
+      };
+
+      const mockToken = `mock-chapter-token-${Date.now()}`;
+      
+      localStorage.setItem('authToken', mockToken);
+      localStorage.setItem('userData', JSON.stringify(mockUser));
+      setUser(mockUser);
+    } catch {
+      throw new Error('Failed to select chapter. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const switchChapter = async (chapterId: string) => {
+    if (!user) return Promise.reject('No user logged in');
+    
+    setIsLoading(true);
+    try {
+      // Simulate API call to switch chapter
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Update user with new chapter
+      const updatedUser = {
+        ...user,
+        chapterId
+      };
+      
+      localStorage.setItem('userData', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+    } catch {
+      throw new Error('Failed to switch chapter. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const updateUser = (updates: Partial<User>) => {
     if (user) {
       const updatedUser = { ...user, ...updates };
@@ -334,11 +459,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     isLoading,
     organizations,
+    chapters,
     login,
     signup,
     loginWithDiscord,
     selectOrganization,
     switchOrganization,
+    selectChapter,
+    switchChapter,
     logout,
     resetPassword,
     updateUser

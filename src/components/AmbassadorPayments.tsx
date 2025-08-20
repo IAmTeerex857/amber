@@ -55,6 +55,8 @@ interface Transaction {
 const AmbassadorPayments: React.FC = () => {
   const [activeTab, setActiveTab] = useState<PaymentTab>('overview');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showAllWallets, setShowAllWallets] = useState(false);
 
   const tabs = [
     { id: 'overview', name: 'Overview', icon: CreditCard },
@@ -154,6 +156,29 @@ const AmbassadorPayments: React.FC = () => {
       provider: 'Local Partners',
       validityDays: 90
     }
+  ];
+
+  // Wallet connection options
+  const popularWallets = [
+    { name: 'WalletConnect', icon: '🔗', description: 'Scan with WalletConnect to connect' },
+    { name: 'MetaMask', icon: '🦊', description: 'Connect to your MetaMask Wallet' },
+    { name: 'Trust Wallet', icon: '🛡️', description: 'Connect to your Trust Wallet' },
+    { name: 'All Wallets', icon: '⚫', description: '460+', isAllWallets: true }
+  ];
+
+  const allWalletOptions = [
+    { name: 'MetaMask', icon: '🦊' },
+    { name: 'Trust Wallet', icon: '🛡️' },
+    { name: 'Zerion', icon: '🔵' },
+    { name: 'OKX Wallet', icon: '⚫' },
+    { name: 'Binance Chain Wallet', icon: '🟡' },
+    { name: 'Bitget Wallet', icon: '🟢' },
+    { name: 'SafePal', icon: '🔵' },
+    { name: 'TokenPocket', icon: '🔵' },
+    { name: 'Uniswap Wallet', icon: '🦄' },
+    { name: 'Coinbase Wallet', icon: '🔵' },
+    { name: 'Frame', icon: '⚫' },
+    { name: 'Ledger Live', icon: '⚫' }
   ];
 
   const recentTransactions: Transaction[] = [
@@ -351,10 +376,13 @@ const AmbassadorPayments: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900">Connected Wallets</h3>
             <p className="text-gray-600 mt-1">Manage your crypto wallets for receiving rewards</p>
           </div>
-          <button className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
-            <Plus className="h-4 w-4" />
-            <span>Connect Wallet</span>
-          </button>
+          <button 
+          onClick={() => setShowWalletModal(true)}
+          className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Connect Wallet</span>
+        </button>
         </div>
 
         <div className="space-y-4">
@@ -521,6 +549,142 @@ const AmbassadorPayments: React.FC = () => {
     }
   };
 
+  // Wallet Connection Modal Component
+  const WalletConnectionModal = () => {
+    if (!showWalletModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                <span className="text-xl">❓</span>
+              </div>
+              <h2 className="text-xl font-semibold text-gray-900">Connect Wallet</h2>
+            </div>
+            <button
+              onClick={() => setShowWalletModal(false)}
+              className="text-gray-400 hover:text-gray-600 text-xl"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            {popularWallets.map((wallet) => (
+              <button
+                key={wallet.name}
+                onClick={() => {
+                  if (wallet.isAllWallets) {
+                    setShowAllWallets(true);
+                  } else {
+                    // Handle individual wallet connection
+                    console.log(`Connecting to ${wallet.name}`);
+                    setShowWalletModal(false);
+                  }
+                }}
+                className="w-full flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+              >
+                <div className="flex items-center space-x-4">
+                  <span className="text-2xl">{wallet.icon}</span>
+                  <div className="text-left">
+                    <div className="font-medium text-gray-900">{wallet.name}</div>
+                    <div className="text-sm text-gray-500">{wallet.description}</div>
+                  </div>
+                </div>
+                {wallet.name === 'WalletConnect' && (
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                    QR CODE
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // All Wallets Grid Modal Component
+  const AllWalletsModal = () => {
+    if (!showAllWallets) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-2xl p-6 w-full max-w-2xl mx-4 max-h-[80vh] overflow-hidden">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => setShowAllWallets(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ←
+              </button>
+              <h2 className="text-xl font-semibold text-gray-900">All Wallets</h2>
+            </div>
+            <button
+              onClick={() => {
+                setShowAllWallets(false);
+                setShowWalletModal(false);
+              }}
+              className="text-gray-400 hover:text-gray-600 text-xl"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search wallet"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+                <span className="text-sm text-gray-500">🔗</span>
+                <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="overflow-y-auto max-h-96">
+            <div className="grid grid-cols-3 gap-4">
+              {allWalletOptions
+                .filter(wallet => 
+                  wallet.name.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((wallet) => (
+                <button
+                  key={wallet.name}
+                  onClick={() => {
+                    console.log(`Connecting to ${wallet.name}`);
+                    setShowAllWallets(false);
+                    setShowWalletModal(false);
+                  }}
+                  className="flex flex-col items-center p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                >
+                  <span className="text-3xl mb-2">{wallet.icon}</span>
+                  <span className="text-sm font-medium text-gray-900 text-center">{wallet.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <div className="text-center text-sm text-gray-500">
+              UX by{' '}
+              <span className="text-gray-900 font-medium">• / reown</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -568,6 +732,10 @@ const AmbassadorPayments: React.FC = () => {
         {/* Tab Content */}
         {renderTabContent()}
       </div>
+
+      {/* Wallet Connection Modals */}
+      <WalletConnectionModal />
+      <AllWalletsModal />
     </div>
   );
 };
