@@ -16,6 +16,11 @@ const iconColorMap: Record<string, string> = {
   payments: 'text-emerald-600',
   profile: 'text-teal-600',
   settings: 'text-gray-600',
+  'fund-requests': 'text-red-600',
+  'ambassador-onboarding': 'text-green-600',
+  'fund-distribution': 'text-orange-600', 
+  'funding-dashboard': 'text-cyan-600',
+  'rewards-management': 'text-amber-600',
 };
 
 interface NavigationItem {

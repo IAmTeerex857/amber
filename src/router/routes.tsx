@@ -23,7 +23,6 @@ import RewardsManagement from '../components/rewards/RewardsManagement';
 import CountryRegionDashboards from '../components/rewards/CountryRegionDashboards';
 
 // Import Hierarchical Role Management components
-import OrganizationManagement from '../components/management/OrganizationManagement';
 import ChapterManagement from '../components/ChapterManagement';
 import PresidentOnboarding from '../components/PresidentOnboarding';
 import FundingDashboard from '../components/FundingDashboard';
@@ -34,8 +33,6 @@ import AmbassadorProfile from '../components/AmbassadorProfile';
 import AmbassadorFundRequest from '../components/AmbassadorFundRequest';
 import AmbassadorTaskLogging from '../components/AmbassadorTaskLogging';
 import PresidentFundDistribution from '../components/PresidentFundDistribution';
-import MonthlyAllocations from '../components/MonthlyAllocations';
-import AuditTrail from '../components/AuditTrail';
 
 // Route guard component
 interface ProtectedRouteProps {
@@ -166,22 +163,6 @@ export const routes: RouteObject[] = [
     element: (
       <ProtectedRoute allowedRoles={['organization']}>
         <FundingDashboard />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/monthly-allocations',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <MonthlyAllocations />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/audit-trail',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <AuditTrail />
       </ProtectedRoute>
     ),
   },
@@ -359,56 +340,6 @@ export const routes: RouteObject[] = [
     element: (
       <ProtectedRoute allowedRoles={['organization']}>
         <CountryRegionDashboards />
-      </ProtectedRoute>
-    ),
-  },
-  // Unified Organization Management Route
-  {
-    path: '/organization-management',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <OrganizationManagement />
-      </ProtectedRoute>
-    ),
-  },
-  // Legacy route redirects for backward compatibility
-  {
-    path: '/global-admin',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <OrganizationManagement />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/country-head',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <OrganizationManagement />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/regional-manager',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <OrganizationManagement />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/role-management',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <OrganizationManagement />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/regional-analytics',
-    element: (
-      <ProtectedRoute allowedRoles={['organization']}>
-        <OrganizationManagement />
       </ProtectedRoute>
     ),
   },

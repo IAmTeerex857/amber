@@ -56,15 +56,9 @@ const getNavigationForRole = (role: 'organization' | 'president' | 'ambassador')
     { id: 'dashboard', name: 'Dashboard', icon: BarChart2, path: '/dashboard' },
     { id: 'campaigns', name: 'Campaigns', icon: Target, path: '/campaigns' },
     { id: 'chapters', name: 'Chapter Management', icon: Crown, path: '/chapters' },
-    // Enhanced Financial System
     { id: 'funding-dashboard', name: 'Funding Dashboard', icon: TrendingUp, path: '/funding-dashboard' },
-    { id: 'monthly-allocations', name: 'Monthly Allocations', icon: Calendar, path: '/monthly-allocations' },
-    { id: 'audit-trail', name: 'Audit Trail', icon: Shield, path: '/audit-trail' },
     { id: 'leaderboard', name: 'Leaderboard', icon: Users, path: '/leaderboard' },
-    // Payment & Rewards System
     { id: 'rewards-management', name: 'Rewards Management', icon: Trophy, path: '/rewards-management' },
-    // Unified Organization Management
-    { id: 'organization-management', name: 'Organization Management', icon: Building2, path: '/organization-management' },
     { id: 'profile', name: 'Profile', icon: User, path: '/profile' },
     { id: 'settings', name: 'Settings', icon: Settings, path: '/settings' },
   ];
