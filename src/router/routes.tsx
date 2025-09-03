@@ -30,9 +30,20 @@ import PresidentDashboard from '../components/PresidentDashboard';
 import AmbassadorOnboardingSystem from '../components/AmbassadorOnboardingSystem';
 import Communities from '../components/Communities';
 import AmbassadorProfile from '../components/AmbassadorProfile';
-import AmbassadorFundRequest from '../components/AmbassadorFundRequest';
+
 import AmbassadorTaskLogging from '../components/AmbassadorTaskLogging';
 import PresidentFundDistribution from '../components/PresidentFundDistribution';
+
+// Import Organization Request components
+import OrganizationRequestForm from '../components/auth/OrganizationRequestForm';
+import PendingApprovalScreen from '../components/auth/PendingApprovalScreen';
+import OrganizationRequestsPanel from '../components/management/OrganizationRequestsPanel';
+
+// Import Monthly Reporting System components
+import AmbassadorReportsPage from '../components/reports/AmbassadorReportsPage';
+import ReportPreview from '../components/reports/ReportPreview';
+import PresidentReportDashboard from '../components/reports/PresidentReportDashboard';
+import CumulativeReportView from '../components/reports/CumulativeReportView';
 
 // Route guard component
 interface ProtectedRouteProps {
@@ -116,6 +127,77 @@ const TaskAssignmentWrapper: React.FC = () => {
   return <TaskAssignment campaign={mockCampaign} />;
 };
 
+// Report Preview wrapper that loads data from route params
+const ReportPreviewWrapper: React.FC = () => {
+  // Mock report data - in real implementation, load from useParams and API
+  const mockReportData = {
+    reportingPeriod: {
+      month: 2,
+      year: 2024,
+      startDate: '2024-03-01',
+      endDate: '2024-03-31'
+    },
+    summary: {
+      executiveSummary: 'March was a productive month with strong engagement across all initiatives.',
+      keyAchievements: ['Completed major project', 'Increased engagement by 25%'],
+      challenges: ['Weather delays'],
+      nextMonthGoals: ['Launch new campaign']
+    },
+    activities: {
+      contentCreation: {
+        description: 'Created engaging content across platforms',
+        count: 15,
+        mediaFiles: [],
+        links: []
+      },
+      events: {
+        description: 'Hosted community events',
+        eventDetails: [],
+        totalAttendees: 150,
+        totalBudget: 500
+      },
+      communityEngagement: {
+        description: 'Active community participation',
+        discordActivity: 'Daily engagement in channels',
+        socialMediaActivity: 'Regular posting and interaction',
+        partnershipWork: 'Collaborated with partners'
+      },
+      other: {
+        description: 'Additional activities',
+        customActivities: []
+      }
+    },
+    impact: {
+      quantitativeMetrics: {
+        newCommunityMembers: 50,
+        socialMediaReach: 10000,
+        contentEngagement: 850,
+        eventsHosted: 2
+      },
+      qualitativeImpact: 'Strong positive community response',
+      testimonials: []
+    },
+    expenses: {
+      totalAmount: 500,
+      breakdown: []
+    },
+    feedback: {
+      challengesFaced: 'Some weather-related delays',
+      supportNeeded: 'Additional resources for events',
+      suggestions: 'Consider indoor backup venues'
+    }
+  };
+
+  return (
+    <ReportPreview 
+      reportData={mockReportData}
+      authorName="Ambassador Name"
+      authorEmail="ambassador@email.com"
+      organizationName="Stellar Development Foundation"
+    />
+  );
+};
+
 // Define all routes
 export const routes: RouteObject[] = [
   {
@@ -190,14 +272,7 @@ export const routes: RouteObject[] = [
       </ProtectedRoute>
     ),
   },
-  {
-    path: '/fund-requests',
-    element: (
-      <ProtectedRoute allowedRoles={['ambassador']}>
-        <AmbassadorFundRequest />
-      </ProtectedRoute>
-    ),
-  },
+
   {
     path: '/task-logging',
     element: (
@@ -340,6 +415,129 @@ export const routes: RouteObject[] = [
     element: (
       <ProtectedRoute allowedRoles={['organization']}>
         <CountryRegionDashboards />
+      </ProtectedRoute>
+    ),
+  },
+  // Organization Request Routes
+  {
+    path: '/request-organization',
+    element: (
+      <ProtectedRoute allowedRoles={['president', 'ambassador']} requireOnboarded={false}>
+        <OrganizationRequestForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/request-status',
+    element: (
+      <ProtectedRoute allowedRoles={['president', 'ambassador']} requireOnboarded={false}>
+        <PendingApprovalScreen />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/organization-requests',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <OrganizationRequestsPanel />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/membership-requests',
+    element: (
+      <ProtectedRoute allowedRoles={['organization']}>
+        <OrganizationRequestsPanel />
+      </ProtectedRoute>
+    ),
+  },
+  // Monthly Reporting System Routes
+  {
+    path: '/reports',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <AmbassadorReportsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reports/edit/:reportId',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <AmbassadorReportsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reports/preview/:reportId',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <ReportPreviewWrapper />
+      </ProtectedRoute>
+    ),
+  },
+
+  {
+    path: '/reports/dashboard',
+    element: (
+      <ProtectedRoute allowedRoles={['president']}>
+        <PresidentReportDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reports/review',
+    element: (
+      <ProtectedRoute allowedRoles={['president']}>
+        <PresidentReportDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reports/cumulative',
+    element: (
+      <ProtectedRoute allowedRoles={['president']}>
+        <CumulativeReportView />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reports/cumulative/:reportId',
+    element: (
+      <ProtectedRoute allowedRoles={['president', 'organization']}>
+        <CumulativeReportView />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/reports/view/:reportId',
+    element: (
+      <ProtectedRoute allowedRoles={['president', 'ambassador']}>
+        <ReportPreviewWrapper />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/monthly-reports',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <AmbassadorReportsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/submit-report',
+    element: (
+      <ProtectedRoute allowedRoles={['ambassador']}>
+        <AmbassadorReportsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/report-dashboard',
+    element: (
+      <ProtectedRoute allowedRoles={['president']}>
+        <PresidentReportDashboard />
       </ProtectedRoute>
     ),
   },

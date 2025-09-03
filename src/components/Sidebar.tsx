@@ -15,12 +15,25 @@ const iconColorMap: Record<string, string> = {
   rewards: 'text-amber-600',
   payments: 'text-emerald-600',
   profile: 'text-teal-600',
-  settings: 'text-gray-600',
-  'fund-requests': 'text-red-600',
+
   'ambassador-onboarding': 'text-green-600',
   'fund-distribution': 'text-orange-600', 
   'funding-dashboard': 'text-cyan-600',
   'rewards-management': 'text-amber-600',
+  // Organization Request icons
+  'organization-requests': 'text-violet-600',
+  'membership-requests': 'text-violet-600',
+  'request-organization': 'text-blue-600',
+  'request-status': 'text-blue-600',
+  'pending-requests': 'text-yellow-600',
+  // Monthly Reporting System icons
+  'reports': 'text-indigo-600',
+  'monthly-reports': 'text-indigo-600',
+  'report-history': 'text-gray-600',
+  'report-dashboard': 'text-purple-600',
+  'cumulative-reports': 'text-blue-700',
+  'reports-analytics': 'text-cyan-600',
+  'report-review': 'text-orange-600',
 };
 
 interface NavigationItem {
