@@ -235,7 +235,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
           {/* Logo and Title */}
           <div>
             <div className="flex items-center mb-8">
-              <div className="w-8 h-8 bg-gray-900 rounded-sm mr-3"></div>
+              <img src="/Amber Icon purple.svg" alt="Amber Logo" className="w-8 h-8 mr-3" />
             </div>
             
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
@@ -333,7 +333,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 bg-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              className="w-full py-3 px-4 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
               {isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mx-auto"></div>

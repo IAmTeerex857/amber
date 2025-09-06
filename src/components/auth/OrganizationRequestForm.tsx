@@ -143,7 +143,7 @@ const OrganizationRequestForm: React.FC<OrganizationRequestFormProps> = ({ onBac
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
             {/* Header */}
             <div className="text-center mb-8">
-              <Building2 className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+              <img src="/Stellar logos.jpeg" alt="Stellar Logo" className="h-12 w-12 mx-auto mb-4 rounded-lg object-cover" />
               <h1 className="text-2xl font-bold text-gray-900">Join an Organization</h1>
               <p className="text-gray-600 mt-2">
                 Request to join an organization as a {user?.role}
@@ -281,7 +281,7 @@ const OrganizationRequestForm: React.FC<OrganizationRequestFormProps> = ({ onBac
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <Building2 className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+            <img src="/Stellar logos.jpeg" alt="Stellar Logo" className="h-12 w-12 mx-auto mb-4 rounded-lg object-cover" />
             <h1 className="text-2xl font-bold text-gray-900">Additional Information</h1>
             <p className="text-gray-600 mt-2">
               Complete your request to join {selectedOrg?.name}
