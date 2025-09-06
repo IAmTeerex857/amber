@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Settings, Edit, Eye as EyeIcon } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Building2, Crown, Users } from 'lucide-react';
 import { useAuth, UserRole } from '../../contexts/AuthContext';
 import DiscordAuthButton from './DiscordAuthButton';
 import OrganizationSelection from './OrganizationSelection';
@@ -129,22 +129,20 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <div className="mx-auto h-16 w-16 flex items-center justify-center mb-8">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <div className="w-8 h-8 bg-white rounded-sm"></div>
-              </div>
+              <img src="/Amber Icon purple.svg" alt="Amber Logo" className="w-16 h-16" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Select user type</h2>
           </div>
 
           <div className="space-y-4">
-            {/* Organization/Admin */}
+            {/* Organization */}
             <button
               onClick={() => handleUserTypeSelect('organization')}
-              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all group text-left"
+              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all group text-left"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                  <Settings className="h-6 w-6 text-blue-600" />
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <Building2 className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Organization</h3>
@@ -153,14 +151,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
               </div>
             </button>
 
-            {/* President/Author */}
+            {/* President */}
             <button
               onClick={() => handleUserTypeSelect('president')}
-              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all group text-left"
+              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all group text-left"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                  <Edit className="h-6 w-6 text-gray-600" />
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <Crown className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">President</h3>
@@ -169,18 +167,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
               </div>
             </button>
 
-            {/* Ambassador/Reader */}
+            {/* Ambassador */}
             <button
               onClick={() => handleUserTypeSelect('ambassador')}
-              className="w-full p-6 border-2 border-blue-500 bg-blue-600 rounded-xl text-white"
+              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all group text-left"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                  <EyeIcon className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <Users className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Ambassador</h3>
-                  <p className="text-sm text-blue-100">Community engagement and tasks</p>
+                  <h3 className="text-lg font-semibold text-gray-900">Ambassador</h3>
+                  <p className="text-sm text-gray-500">Community engagement and tasks</p>
                 </div>
               </div>
             </button>
@@ -193,14 +191,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
           <div className="flex items-center justify-between pt-6">
             <button
               onClick={() => setAuthStep('credentials')}
-              className="flex items-center text-blue-600 hover:text-blue-700 font-medium"
+              className="flex items-center text-purple-600 hover:text-purple-700 font-medium"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               BACK
             </button>
             <button
               disabled
-              className="px-8 py-3 bg-blue-600 text-white rounded-full font-medium opacity-50 cursor-not-allowed"
+              className="px-8 py-3 bg-purple-600 text-white rounded-full font-medium opacity-50 cursor-not-allowed"
             >
               CONTINUE
             </button>
