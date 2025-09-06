@@ -45,10 +45,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
     }
   };
 
-  const handleUserTypeSelect = async (selectedUserType: UserRole) => {
+  const handleUserTypeSelect = (selectedUserType: UserRole) => {
     setUserType(selectedUserType);
+  };
+
+  const handleUserTypeContinue = async () => {
+    if (!userType) return;
     
-    // Continue with authentication automatically after user type selection
     try {
       if (mode === 'signup') {
         if (formData.password !== formData.confirmPassword) {
@@ -61,9 +64,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
           setAuthStep('credentials');
           return;
         }
-        await signup(formData.email, formData.password, formData.name, selectedUserType);
+        await signup(formData.email, formData.password, formData.name, userType);
       } else {
-        await login(formData.email, formData.password, selectedUserType);
+        await login(formData.email, formData.password, userType);
       }
 
       onSuccess?.();
@@ -138,10 +141,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
             {/* Organization */}
             <button
               onClick={() => handleUserTypeSelect('organization')}
-              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all group text-left"
+              className={`w-full p-6 border-2 rounded-xl transition-all group text-left ${
+                userType === 'organization'
+                  ? 'border-purple-500 bg-purple-50'
+                  : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+              }`}
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                  userType === 'organization'
+                    ? 'bg-purple-200'
+                    : 'bg-purple-100 group-hover:bg-purple-200'
+                }`}>
                   <Building2 className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
@@ -154,10 +165,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
             {/* President */}
             <button
               onClick={() => handleUserTypeSelect('president')}
-              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all group text-left"
+              className={`w-full p-6 border-2 rounded-xl transition-all group text-left ${
+                userType === 'president'
+                  ? 'border-purple-500 bg-purple-50'
+                  : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+              }`}
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                  userType === 'president'
+                    ? 'bg-purple-200'
+                    : 'bg-purple-100 group-hover:bg-purple-200'
+                }`}>
                   <Crown className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
@@ -170,10 +189,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
             {/* Ambassador */}
             <button
               onClick={() => handleUserTypeSelect('ambassador')}
-              className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all group text-left"
+              className={`w-full p-6 border-2 rounded-xl transition-all group text-left ${
+                userType === 'ambassador'
+                  ? 'border-purple-500 bg-purple-50'
+                  : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+              }`}
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${
+                  userType === 'ambassador'
+                    ? 'bg-purple-200'
+                    : 'bg-purple-100 group-hover:bg-purple-200'
+                }`}>
                   <Users className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
@@ -197,10 +224,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
               BACK
             </button>
             <button
-              disabled
-              className="px-8 py-3 bg-purple-600 text-white rounded-full font-medium opacity-50 cursor-not-allowed"
+              onClick={handleUserTypeContinue}
+              disabled={!userType || isLoading}
+              className={`px-8 py-3 rounded-full font-medium transition-all ${
+                userType && !isLoading
+                  ? 'bg-purple-600 hover:bg-purple-700 text-white cursor-pointer'
+                  : 'bg-purple-600 text-white opacity-50 cursor-not-allowed'
+              }`}
             >
-              CONTINUE
+              {isLoading ? 'LOADING...' : 'CONTINUE'}
             </button>
           </div>
         </div>
