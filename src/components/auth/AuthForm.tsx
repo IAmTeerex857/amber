@@ -123,8 +123,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
                   <Settings className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Admin</h3>
-                  <p className="text-sm text-gray-500">Organization management</p>
+                  <h3 className="text-lg font-semibold text-gray-900">Organization</h3>
+                  <p className="text-sm text-gray-500">Manage chapters and ambassadors</p>
                 </div>
               </div>
             </button>
@@ -139,8 +139,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
                   <Edit className="h-6 w-6 text-gray-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Author</h3>
-                  <p className="text-sm text-gray-500">Chapter leadership</p>
+                  <h3 className="text-lg font-semibold text-gray-900">President</h3>
+                  <p className="text-sm text-gray-500">Regional chapter management</p>
                 </div>
               </div>
             </button>
@@ -155,8 +155,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
                   <EyeIcon className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Reader</h3>
-                  <p className="text-sm text-blue-100">Ambassador activities</p>
+                  <h3 className="text-lg font-semibold text-white">Ambassador</h3>
+                  <p className="text-sm text-blue-100">Community engagement and tasks</p>
                 </div>
               </div>
             </button>
