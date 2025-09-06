@@ -45,10 +45,34 @@ const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
     }
   };
 
-  const handleUserTypeSelect = (selectedUserType: UserRole) => {
+  const handleUserTypeSelect = async (selectedUserType: UserRole) => {
     setUserType(selectedUserType);
-    setAuthStep('credentials');
+    
+    // Continue with authentication automatically after user type selection
+    try {
+      if (mode === 'signup') {
+        if (formData.password !== formData.confirmPassword) {
+          setError('Passwords do not match');
+          setAuthStep('credentials');
+          return;
+        }
+        if (formData.password.length < 6) {
+          setError('Password must be at least 6 characters');
+          setAuthStep('credentials');
+          return;
+        }
+        await signup(formData.email, formData.password, formData.name, selectedUserType);
+      } else {
+        await login(formData.email, formData.password, selectedUserType);
+      }
+
+      onSuccess?.();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setAuthStep('credentials');
+    }
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
