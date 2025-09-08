@@ -138,7 +138,7 @@ const AmbassadorRegistration: React.FC = () => {
     { id: 1, name: 'Ambassador Type', icon: Users },
     { id: 2, name: 'Basic Information', icon: User },
     { id: 3, name: 'Profile Details', icon: Star },
-    { id: 4, name: 'Social Media', icon: Instagram },
+    { id: 4, name: 'Social Media', icon: Camera },
     { id: 5, name: 'Goals & Motivation', icon: Target }
   ];
 
