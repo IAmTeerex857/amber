@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   User, 
-  Instagram, 
-  Twitter, 
-  Youtube, 
   Building2,
   GraduationCap,
   Star,
@@ -18,12 +15,10 @@ import {
   CheckCircle2,
   Link2,
   X,
-  Music2,
-  Ghost,
   Camera,
   Briefcase
 } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { SocialIcon } from './SocialMediaIcons';
 
 interface AmbassadorData {
   // Basic Info
@@ -116,7 +111,7 @@ const AmbassadorRegistration: React.FC = () => {
 
   // Brand styles for platform icons
   const brandWrapperClass: Record<PlatformKey, string> = {
-    instagram: 'bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-400',
+    instagram: 'bg-blue-600',
     tiktok: 'bg-black ring-1 ring-cyan-400/40',
     youtube: 'bg-red-600',
     twitter: 'bg-black',
@@ -132,7 +127,7 @@ const AmbassadorRegistration: React.FC = () => {
   };
 
   const brandLinkColorClass: Record<PlatformKey, string> = {
-    instagram: 'text-pink-500',
+    instagram: 'text-blue-500',
     tiktok: 'text-cyan-400',
     youtube: 'text-red-500',
     twitter: 'text-gray-900',
@@ -647,17 +642,17 @@ const AmbassadorRegistration: React.FC = () => {
 
             <div className="space-y-4">
               {([
-                { key: 'instagram', name: 'Facebook & Instagram', icon: Instagram, placeholder: '@username or profile URL' },
-                { key: 'tiktok', name: 'TikTok', icon: Music2, placeholder: '@username or profile URL' },
-                { key: 'youtube', name: 'YouTube', icon: Youtube, placeholder: 'Channel URL' },
-                { key: 'snapchat', name: 'Snapchat', icon: Ghost, placeholder: 'Profile URL' },
-                { key: 'twitter', name: 'X', icon: Twitter, placeholder: '@username or profile URL' },
-              ] as { key: PlatformKey; name: string; icon: LucideIcon; placeholder: string; }[]).map((p) => (
+                { key: 'instagram', name: 'Facebook & Instagram', platform: 'facebook', placeholder: '@username or profile URL' },
+                { key: 'tiktok', name: 'TikTok', platform: 'tiktok', placeholder: '@username or profile URL' },
+                { key: 'youtube', name: 'YouTube', platform: 'youtube', placeholder: 'Channel URL' },
+                { key: 'snapchat', name: 'Snapchat', platform: 'snapchat', placeholder: 'Profile URL' },
+                { key: 'twitter', name: 'X', platform: 'twitter', placeholder: '@username or profile URL' },
+              ] as { key: PlatformKey; name: string; platform: string; placeholder: string; }[]).map((p) => (
                 <div key={p.key} className="bg-white border-2 border-gray-200 rounded-3xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${brandWrapperClass[p.key]} shadow-sm`}>
-                        <p.icon className={`w-6 h-6 ${brandIconColorClass[p.key]}`} />
+                        <SocialIcon platform={p.platform as any} size="md" className="!w-6 !h-6" />
                       </div>
                       <div>
                         <div className="text-lg font-bold text-gray-900">{p.name}</div>
